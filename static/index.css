@@ -4,6 +4,14 @@ html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
+}
+
+:root{
+    --primary: #00C372;
+    --secondary: black;
+    --tertiary: white;
+
 }
 
 @import url(https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;800;900&display=swap);
@@ -43,7 +51,7 @@ body {
     font-size: x-large;
     font-weight: bold;
     margin-left: 10px;
-    color: black;
+    color: var(--secondary);
     letter-spacing: 3px;
 }
 
@@ -81,13 +89,15 @@ body {
 
 #prompt_desc{
     font-size: xx-large;
+    color: var(--secondary);
     font-weight: bolder;
     text-align: center;
     width: 90%;
 }
 
 span{
-    color: #00C372;
+    color: var(--primary);
+    
     letter-spacing: 3px;
 }
 
@@ -98,7 +108,8 @@ span{
 }
 
 .links > a:hover{
-    color: #00C372;
+    color: var(--primary);
+
     transition: .3s;
     font-weight: 800;
     letter-spacing: 4px;
@@ -107,9 +118,12 @@ span{
 /* Custom styles for the input element */
 #prompt_input {
     font-family: 'Poppins';
-    font-size: 20px; /* Adjust the font size as needed */
-    padding: 10px 100px; /* Add padding to provide spacing around the text */
-    border: 2px solid #00C372; /* Add a border with a custom color */
+    font-size: 15px; 
+    padding-left: 13px;/* Adjust the font size as needed */
+    width: 60%;
+    height: 40px; /* Add padding to provide spacing around the text */
+    border: 2px solid var(--primary);
+ /* Add a border with a custom color */
     border-radius: 8px; /* Add rounded corners to the input */
     outline: none; /* Remove the default focus outline */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
@@ -135,10 +149,71 @@ span{
 }
 
 .tags > div:hover{
-    border: 1px solid #00C372;
+    border: 1px solid var(--primary);
+
+}
+*{
+    border: 1px  red;
 }
 
+.switch {
+    --secondary-container: #3a4b39;
 
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 3.2em;
+    height: 1.4em;
+   }
+   
+   .switch input {
+    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+   }
+   
+   .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--tertiary);
+    border: #00C372 1px solid;
+    transition: .2s;
+    border-radius: 30px;
+   }
+   
+   .slider:before {
+    position: absolute;
+    content: "";
+    height: 1em;
+    width: 1em;
+    border-radius: 20px;
+    left: 0.3em;
+    bottom: 0.17em;
+    background-color: var(--primary);
+
+    transition: .4s;
+   }
+   
+   input:checked + .slider::before {
+    background-color: var(--secondary-container);
+   }
+   
+   input:checked + .slider {
+    background-color: var(--primary);
+   }
+   
+   input:focus + .slider {
+    box-shadow: 0 0 1px var(--primary);
+   }
+   
+   input:checked + .slider:before {
+    transform: translateX(1.5em);
+   }
 
 
 

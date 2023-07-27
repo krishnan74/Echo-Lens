@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heal-GPT</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
     <div class="header">
         <div class="logo_div">
-            <img id = "logo" src="logo.png" alt="">
+            <img id = "logo" src="{{ url_for('static', filename='logo.png') }}" alt="">
             <p id="brand_name">HEAL - GPT</p>
         </div>
         <div class="links">
             <a href="">Home</a>
             <a href="">Search</a>
-            <a href="">Diagnose</a>
+            <a href="/diagnose">Diagnose</a>
             <a href="">Login</a>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
         </div>
     </div>
 
