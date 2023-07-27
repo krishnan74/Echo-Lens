@@ -67,12 +67,12 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #F1F6F6;
-    padding: 20px; /* Add some padding for spacing inside the prompt_bar_div if necessary */
+    /* Add some padding for spacing inside the prompt_bar_div if necessary */
 }
 
 .prompt_div_details{
     display: flex;
-    margin: 80px 0px 0px 0px;
+    margin: 11% 0px 0px 0px;
     flex-direction: column;
     align-items: center;
 
