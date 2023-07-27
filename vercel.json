@@ -2,7 +2,7 @@
     "rewrites": [
       {
         "source": "/api/(.*)",
-        "destination": "/api/:1"
+        "destination": "http://localhost:5500/api/:1"
       }
     ]
   }
