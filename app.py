@@ -18,6 +18,10 @@ def index():
 def diagnose():
     return render_template('diagnose.html')
 
+@app.route('/identify')
+def diagnose():
+    return render_template('identify.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():

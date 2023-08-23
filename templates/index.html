@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heal-GPT</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <title>Eco-Lens</title>
+    
 </head>
 <body>
     <div class="header">
         <div class="logo_div">
-            <img id = "logo" src="{{ url_for('static', filename='logo.png') }}" alt="">
-            <p id="brand_name">HEAL - GPT</p>
+            
+
+            <p id="brand_name">Eco-Lens</p>
         </div>
         <div class="links">
             <a href="">Home</a>
-            <a href="">Search</a>
-            <a href="/diagnose">Diagnose</a>
+            <a href="/identify">Identify</a>
             <a href="">Login</a>
             <label class="switch">
                 <input type="checkbox">
@@ -28,14 +28,9 @@
         <div id="video_div"></div>
         <div class="prompt_bar_div">
             <div class="prompt_div_details">
-                <p id="prompt_desc">Explore Electronic Health Records using <span>TiDB Cloud database</span></p>
-                <input id = "prompt_input" type="text">
-                <div class="tags">
-                    <div>Doctors</div>
-                    <div>Patients</div>
-                    <div>Diseases</div>
-                    
-                </div>
+                <p id="prompt_desc">Upload the image of the endangered species</p>
+                <input id = "prompt_input" type="file" name="image" accept="image/*">
+                <p>{{ message }}</p>
             </div>
             
         </div>
