@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/index.css">
     <title>Eco-Lens</title>
-    
 </head>
 <body>
     <div class="header">
         <div class="logo_div">
-            
-
+            <img id="logo" src="../static/logo.jpeg" alt="">
             <p id="brand_name">Eco-Lens</p>
         </div>
         <div class="links">
-            <a href="">Home</a>
-            <a href="/identify">Identify</a>
-            <a href="">Login</a>
+            <a href="index.html">Home</a>
+            <a href="identify.html">Identify</a>
+            <a href="#">Login</a>
             <label class="switch">
                 <input type="checkbox">
                 <span class="slider"></span>
@@ -27,15 +26,103 @@
     <div class="first_div">
         <div id="video_div"></div>
         <div class="prompt_bar_div">
+            
             <div class="prompt_div_details">
                 <p id="prompt_desc">Upload the image of the endangered species</p>
-                <input id = "prompt_input" type="file" name="image" accept="image/*">
-                <p>{{ message }}</p>
+                <div class="promt_div">
+                    <input id="prompt_input" type="file" name="image" accept="image/*">
+                    <button id="clear_button">Clear</button>
+                </div>
+                
+                <div class="location_inputs">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city">
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country">
+                </div>
+                
+                <button id="identify_button">Identify</button>
             </div>
-            
         </div>
-        
     </div>
-    
+
+    <script>
+        const promptInput = document.getElementById('prompt_input');
+        const clearButton = document.getElementById('clear_button');
+        const identifyButton = document.getElementById('identify_button');
+        const videoDiv = document.getElementById('video_div');
+
+        clearButton.addEventListener('click', () => {
+            promptInput.value = ''; // Clear the file input
+            videoDiv.innerHTML = ''; // Clear any uploaded image or loading message
+        });
+
+        identifyButton.addEventListener('click', () => {
+            const selectedFile = promptInput.files[0];
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const country = document.getElementById('country').value;
+
+            if (selectedFile) {
+                displayLoading(city, state, country);
+            }
+        });
+
+        function displayLoading(city, state, country) {
+            videoDiv.innerHTML = '<div class="loading">Uploading image...</div>';
+            setTimeout(() => {
+                videoDiv.innerHTML = '<div class="loading">Analyzing image...</div>';
+            }, 2000); 
+            setTimeout(() => {
+                videoDiv.innerHTML = '<div class="loading">Fetching details...</div>';
+            }, 2000); 
+            setTimeout(() => {
+                showResult(city, state, country);
+            }, 2000); 
+        }
+
+        function showResult(city, state, country) {
+            // Details of the endangered species
+            const endangeredSpeciesDetails = {
+                name: "California Condor",
+                description: "This is a description of the endangered species.",
+                imageSrc: URL.createObjectURL(promptInput.files[0]),
+                label: "California Condor",
+                status: "Critically Endangered",
+                kingdom: "Animalia",
+                genus: "Gymnogyps",
+                species: "G. californianus",
+                scientificName: "Gymnogyps californianus",
+                habitat: "Diverse",
+                population: "400",
+                location: `${city}, ${state}, ${country}`
+            };
+
+            // Create an HTML structure to display the details and image
+            const resultHTML = `
+                <div class="result-container">
+                    <img src="${endangeredSpeciesDetails.imageSrc}" alt="Endangered Species">
+                    <h2>${endangeredSpeciesDetails.name}</h2>
+                    <p>${endangeredSpeciesDetails.description}</p>
+                    <ul class="species-details">
+                        <li><strong>Label:</strong> ${endangeredSpeciesDetails.label}</li>
+                        <li><strong>Status:</strong> ${endangeredSpeciesDetails.status}</li>
+                        <li><strong>Kingdom:</strong> ${endangeredSpeciesDetails.kingdom}</li>
+                        <li><strong>Genus:</strong> ${endangeredSpeciesDetails.genus}</li>
+                        <li><strong>Species:</strong> ${endangeredSpeciesDetails.species}</li>
+                        <li><strong>Scientific Name:</strong> ${endangeredSpeciesDetails.scientificName}</li>
+                        <li><strong>Habitat:</strong> ${endangeredSpeciesDetails.habitat}</li>
+                        <li><strong>Population:</strong> ${endangeredSpeciesDetails.population}</li>
+                        <li><strong>Location:</strong> ${endangeredSpeciesDetails.location}</li>
+                    </ul>
+                </div>
+            `;
+
+            // Replace the content of videoDiv with the result HTML
+            videoDiv.innerHTML = resultHTML;
+        }
+    </script>
 </body>
 </html>

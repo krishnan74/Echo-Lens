@@ -18,6 +18,7 @@ html, body {
 
 body {
   font-family: 'Poppins', sans-serif;
+  overflow-y: hidden;
 }
 
 *{
@@ -46,6 +47,13 @@ body {
     height: 40px;
     width: 40px;
 }
+
+
+#logo_big {
+    height: 100px;
+    width: 100px;
+}
+
 
 #brand_name {
     font-size: x-large;
@@ -221,4 +229,202 @@ span{
     width: 70vw;
     flex: 2;
     border: #00C372 3px solid; 
+    overflow-y: auto;
+}
+
+
+.loading {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.loading::before,
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Styles for the Clear button */
+#clear_button {
+    background-color: var(--secondary);
+    color: var(--tertiary);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: -75px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#clear_button:hover {
+    background-color: var(--primary);
+    color: var(--tertiary);
+}
+
+/* Styles for the Location input */
+#location {
+    font-family: 'Poppins';
+    font-size: 15px;
+    padding-left: 13px;
+    width: 60%;
+    height: 40px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+/* Styles for the Identify button */
+#identify_button {
+    background-color: var(--tertiary);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'Poppins';
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#identify_button:hover{
+    background-color: var(--primary);
+    color: var(--tertiary);
+}
+
+
+
+/* Additional styling for the result message */
+#video_div p {
+    font-size: 18px;
+    color: var(--secondary);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.promt_div{
+    display: flex;
+    width: 700px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styles for the result container */
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    background-color: var(--tertiary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the uploaded image */
+.result-container img {
+    max-width: 60%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Styles for the species name */
+.result-container h2 {
+    font-size: 24px;
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+
+.result-container p {
+    font-size: 16px;
+    color: var(--secondary);
+    text-align: center;
+}
+
+
+
+.location_inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.location_inputs label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.location_inputs input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.result-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.result-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.result-container p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.species-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.species-details li {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+
+*{
+    border: 1px  red;
 }

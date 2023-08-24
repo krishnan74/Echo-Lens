@@ -1,15 +1,38 @@
-# app.py
-
 import os
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
-import joblib
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.models import Model
+from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
 
-# Load your pre-trained AI model
-model = joblib.load('pcos_diagnosis_model.pkl')
+# Load metadata
+metadata_path = '../python/test_image_metadata.csv'  # Update with your CSV file path
+metadata = pd.read_csv(metadata_path)
 
+# Load pre-trained MobileNetV2 model without classification layers
+base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+model = Model(inputs=base_model.input, outputs=base_model.layers[-1].output)
+
+# Load and preprocess an uploaded image
+def preprocess_image(image_path):
+    img = tf.keras.preprocessing.image.load_img(image_path, target_size=(224, 224))
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = preprocess_input(img_array)
+    img_array = np.expand_dims(img_array, axis=0)
+    return img_array
+
+# Get feature vector for an image
+def get_feature_vector(image_path):
+    img_array = preprocess_image(image_path)
+    features = model.predict(img_array)
+    return features.flatten()
+
+# Your route definitions go here...
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -19,41 +42,33 @@ def diagnose():
     return render_template('diagnose.html')
 
 @app.route('/identify')
-def diagnose():
+def identify():
     return render_template('identify.html')
 
-
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/identify', methods=['GET', 'POST'])
+def identify():
     try:
-        # Assuming the dataset is in the same directory and named 'PCOS_data_without_infertility.xlsx'
-        PCOS_inf = pd.read_csv('PCOS_infertility.csv')
-        PCOS_woinf = pd.read_excel('PCOS_data_without_infertility.xlsx', sheet_name="Full_new")
+        if request.method == 'POST':
+            # Path to uploaded image
+            uploaded_image_path = 'uploads/uploaded_image.jpg'  # Update with your uploaded image path
+            uploaded_image_features = get_feature_vector(uploaded_image_path)
 
-        data = pd.merge(PCOS_woinf, PCOS_inf, on='Patient File No.', suffixes={'', '_y'}, how='left')
+            # Calculate feature vectors for dataset images and add to metadata
+            image_directory = 'testimages'  # Update with your image directory path
+            metadata['feature_vector'] = metadata['image_filename'].apply(
+                lambda filename: get_feature_vector(os.path.join(image_directory, filename))
+            )
 
-        # Dropping the repeated features after merging
-        data = data.drop(['Unnamed: 44', 'Sl. No_y', 'PCOS (Y/N)_y', '  I   beta-HCG(mIU/mL)_y',
-                          'II    beta-HCG(mIU/mL)_y', 'AMH(ng/mL)_y'], axis=1)
-        data["AMH(ng/mL)"] = pd.to_numeric(data["AMH(ng/mL)"], errors='coerce')
-        data["II    beta-HCG(mIU/mL)"] = pd.to_numeric(data["II    beta-HCG(mIU/mL)"], errors='coerce')
+            # Calculate cosine similarity between uploaded image and dataset images
+            cosine_similarities = cosine_similarity([uploaded_image_features], metadata['feature_vector'].tolist())
+            most_similar_index = np.argmax(cosine_similarities)
 
-        # Dealing with missing values. Filling NA values with the median of that feature.
-        data['Marraige Status (Yrs)'].fillna(data['Marraige Status (Yrs)'].median(), inplace=True)
-        data['II    beta-HCG(mIU/mL)'].fillna(data['II    beta-HCG(mIU/mL)'].median(), inplace=True)
-        data['AMH(ng/mL)'].fillna(data['AMH(ng/mL)'].median(), inplace=True)
-        data['Fast food (Y/N)'].fillna(data['Fast food (Y/N)'].median(), inplace=True)
+            # Retrieve all details for the most similar image
+            most_similar_image_details = metadata.loc[most_similar_index]
+            print("Generated Details:")
+            print(most_similar_image_details)
 
-        # Clearing up the extra space in the column names (optional)
-        data.columns = [col.strip() for col in data.columns]
-
-        X = data.drop(["PCOS (Y/N)", "Sl. No", "Patient File No."], axis=1)  # dropping out index from features too
-
-        # Predict using your AI model
-        predictions = model.predict(X)
-
-        # Return the predictions as JSON
-        return jsonify({'predictions': predictions.tolist()})
+            return jsonify({'result': 'Identification successful'})
 
     except Exception as e:
         return jsonify({'error': str(e)})
